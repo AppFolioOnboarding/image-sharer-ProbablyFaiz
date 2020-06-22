@@ -7,6 +7,12 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     @not_url = images(:not_url)
   end
 
+  test 'should show images index at root' do
+    get root_url
+    assert_response :success
+    assert_select 'div.image-list'
+  end
+
   test 'should get index' do
     get images_url
     assert_response :success
