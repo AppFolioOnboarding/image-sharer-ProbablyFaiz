@@ -1,7 +1,10 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  url: MyString
+valid_image_url:
+  url: https://github.com/ProbablyFaiz.png
 
-two:
-  url: MyString
+wrong_url_type:
+  url: ftp://example.com/test.png
+
+not_url:
+  url: hello
