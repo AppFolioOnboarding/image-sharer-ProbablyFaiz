@@ -5,7 +5,7 @@ class Image < ApplicationRecord
 
   def validate_url
     uri = URI.parse(url)
-    uri.is_a?(URI::HTTP) && !uri.host.nil?
+    raise URI::InvalidURIError unless uri.is_a?(URI::HTTP) && !uri.host.nil?
   rescue URI::InvalidURIError
     errors.add(:base, 'The URL you provided was invalid.')
   end
