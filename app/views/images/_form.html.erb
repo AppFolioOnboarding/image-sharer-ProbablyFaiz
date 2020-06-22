@@ -4,12 +4,17 @@
       <h2><%= pluralize(image.errors.count, "error") %> prohibited this image from being saved:</h2>
 
       <ul>
-      <% image.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% image.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
+
+  <div class="form-field">
+    <%= form.label :url %>
+    <%= form.text_field :url, id: :image_url %>
+  </div>
 
   <div class="actions">
     <%= form.submit %>
