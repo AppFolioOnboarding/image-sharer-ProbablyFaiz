@@ -10,6 +10,7 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
   test 'should get index' do
     get images_url
     assert_response :success
+    assert_select 'div.image-list'
   end
 
   test 'should get new' do
@@ -38,6 +39,12 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should show image' do
     get image_url(@valid_image_url)
+    assert_response :success
+    assert_select 'img[alt="' + @valid_image_url.url + '"]'
+  end
+
+  test 'should show image on index' do
+    get images_url
     assert_response :success
     assert_select 'img[alt="' + @valid_image_url.url + '"]'
   end
