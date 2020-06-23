@@ -41,22 +41,4 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select 'img[alt="' + @valid_image_url.url + '"]'
   end
-
-  #   test 'should get edit' do
-  #     get edit_image_url(@image)
-  #     assert_response :success
-  #   end
-  #
-  #   test 'should update image' do
-  #     patch image_url(@valid_image_url), params: { image: {} }
-  #     assert_redirected_to image_url(@image)
-  #   end
-  #
-  # test 'should destroy image' do
-  #   assert_difference('Image.count', -1) do
-  #     delete image_url(@valid_image_url)
-  #   end
-  #
-  #   assert_redirected_to images_url
-  # end
 end
