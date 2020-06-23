@@ -1,4 +1,9 @@
 class ImagesController < ApplicationController
+  before_action :set_image, only: %i[show]
+
+  # GET /images/1
+  def show; end
+
   # GET /images/new
   def new
     @image = Image.new
@@ -9,15 +14,25 @@ class ImagesController < ApplicationController
     @image = Image.new(image_params)
 
     if @image.save
-      redirect_to root_path
+      redirect_to @image, notice: 'Image was successfully created.'
     else
-      render :new, status: :unprocessable_entity
+      render :new, notice: 'Failed to create the image.', status: :unprocessable_entity
     end
   end
 
   private
 
-  # Only allow a trusted parameter "white list" through.
+  # Use callbacks to share common setup or constraints between actions.
+  def set_image
+    @image = Image.find(show_params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to root_path, notice: 'The specified image could not be found.'
+  end
+
+  def show_params
+    params.permit(:id)
+  end
+
   def image_params
     params.require(:image).permit(:url)
   end

@@ -11,7 +11,9 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Image.count', 1) do
       post images_url, params: { image: { url: 'https://github.com/ProbablyFaiz.png' } }
     end
-    assert_redirected_to root_url
+    assert_redirected_to image_url(Image.last)
+    follow_redirect!
+    assert_select 'p#notice', 'Image was successfully created.'
   end
 
   test 'should raise exception for nil image' do
@@ -39,5 +41,19 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
       post images_url, params: { image: { url: 'hello' } }
     end
     assert_select 'span.error', 'is an invalid URL'
+  end
+
+  test 'should show image' do
+    image = Image.create(url: 'https://github.com/ProbablyFaiz.png')
+    get image_url(image)
+    assert_response :success
+    assert_select 'img[alt="' + image.url + '"]'
+  end
+
+  test 'should redirect to root if image does not exist' do
+    get image_url(999)
+    assert_redirected_to root_url
+    follow_redirect!
+    assert_select 'p#notice', 'The specified image could not be found.'
   end
 end
