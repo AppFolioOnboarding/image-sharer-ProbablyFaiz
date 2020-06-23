@@ -1,6 +1,10 @@
 class ImagesController < ApplicationController
   before_action :set_image, only: %i[show]
 
+  def index
+    @images = Image.order(created_at: :desc).all
+  end
+
   # GET /images/1
   def show; end
 
@@ -26,7 +30,7 @@ class ImagesController < ApplicationController
   def set_image
     @image = Image.find(show_params[:id])
   rescue ActiveRecord::RecordNotFound
-    redirect_to root_path, notice: 'The specified image could not be found.'
+    redirect_to images_path, notice: 'The specified image could not be found.'
   end
 
   def show_params

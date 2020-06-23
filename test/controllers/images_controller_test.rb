@@ -1,6 +1,37 @@
 require 'test_helper'
 
 class ImagesControllerTest < ActionDispatch::IntegrationTest
+  test 'should get index' do
+    get images_url
+    assert_response :success
+  end
+
+  test 'should show images index at root' do
+    get root_url
+    assert_response :success
+    assert_select 'div.image-list'
+  end
+
+  test 'should show images in order on index' do
+    image1 = Image.create(url: 'https://github.com/ProbablyFaiz.png', created_at: DateTime.now - 10)
+    image2 = Image.create(url: 'https://github.com/bhargav265.png', created_at: DateTime.now - 20)
+    image3 = Image.create(url: 'https://github.com/n-wach.png', created_at: DateTime.now - 30)
+    get images_path
+    assert_response :success
+    assert_select 'div.image-list > a:nth-child(1)' do
+      assert_select format('img[src="%<url>s"]', url: image1.url)
+      assert_select format('a[href="%<url>s"]', url: image_path(image1))
+    end
+    assert_select 'div.image-list > a:nth-child(2)' do
+      assert_select format('img[src="%<url>s"]', url: image2.url)
+      assert_select format('a[href="%<url>s"]', url: image_path(image2))
+    end
+    assert_select 'div.image-list > a:nth-child(3)' do
+      assert_select format('img[src="%<url>s"]', url: image3.url)
+      assert_select format('a[href="%<url>s"]', url: image_path(image3))
+    end
+  end
+
   test 'should get new' do
     get new_image_url
     assert_response :success
@@ -50,9 +81,9 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'img[alt="' + image.url + '"]'
   end
 
-  test 'should redirect to root if image does not exist' do
+  test 'should redirect to index if image does not exist' do
     get image_url(999)
-    assert_redirected_to root_url
+    assert_redirected_to images_url
     follow_redirect!
     assert_select 'p#notice', 'The specified image could not be found.'
   end

@@ -17,3 +17,7 @@
 .main-content {
   margin-left: 10px;
 }
+
+.image-list > a > img {
+  max-width: 400px;
+}
