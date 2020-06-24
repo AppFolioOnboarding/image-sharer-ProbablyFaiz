@@ -1,0 +1,13 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Images</h1>
+
+<div class="image-list">
+  <% @images.each do |image| %>
+    <a href="<%= image_path(image) %>"><img src="<%= image.url %>" alt="<%= image.url %>"></a>
+  <% end %>
+</div>
+
+<br>
+
+<%= link_to 'New Image', new_image_path %>
