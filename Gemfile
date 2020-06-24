@@ -19,6 +19,8 @@ gem 'jquery-rails'
 
 gem 'valid_url'
 
+gem 'simple_form'
+
 gem 'webpacker', '~> 4'
 
 group :development, :test do
