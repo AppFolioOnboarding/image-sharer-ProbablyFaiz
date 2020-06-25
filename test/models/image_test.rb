@@ -23,4 +23,17 @@ class ImageTest < ActiveSupport::TestCase
     refute image.valid?
     assert_equal(image.errors.full_messages, ['Url is an invalid URL'])
   end
+
+  test 'image with tag_list has correct tags' do
+    image = Image.new(url: 'https://github.com/ProbablyFaiz.png', tag_list: 'github, profile_pic,test')
+    assert image.tag_list.is_a?(Array) # It should be transformed into an array by acts_as_taggable_on
+    assert image.tag_list.include?('github')
+    assert image.tag_list.include?('profile_pic')
+    assert image.tag_list.include?('test')
+  end
+
+  test 'image without tag_list has no tags' do
+    image = Image.new(url: 'https://github.com/ProbablyFaiz.png')
+    assert_empty image.tag_list
+  end
 end

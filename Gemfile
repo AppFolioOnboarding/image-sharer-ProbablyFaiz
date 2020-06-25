@@ -21,6 +21,8 @@ gem 'valid_url'
 
 gem 'simple_form'
 
+gem 'acts-as-taggable-on', '~> 6.0'
+
 gem 'webpacker', '~> 4'
 
 group :development, :test do

@@ -60,6 +60,42 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'span.error', 'is an invalid URL'
   end
 
+  test 'should create image with tags' do
+    tags = %w[github profile_pic test]
+    url = 'https://github.com/ProbablyFaiz.png'
+    assert_difference('Image.count', 1) do
+      post images_url, params: { image: { url: url, tag_list: tags.join(',') } }
+    end
+    assert_equal tags, Image.last.tag_list
+    assert_equal url, Image.last.url
+    assert_redirected_to image_url(Image.last)
+    follow_redirect!
+    assert_select 'p#notice', 'Image was successfully created.'
+  end
+
+  test 'should create image with no tags' do
+    assert_difference('Image.count', 1) do
+      post images_url, params: { image: { url: 'https://github.com/ProbablyFaiz.png',
+                                          tag_list: nil } }
+    end
+    assert Image.last.tag_list.empty?
+    assert_redirected_to image_url(Image.last)
+  end
+
+  test 'should display tags on image show page' do
+    tags = %w[github profile_pic test]
+    post images_url, params: { image: { url: 'https://github.com/ProbablyFaiz.png',
+                                        tag_list: tags.join(',') } }
+    get image_url(Image.last)
+    assert_select 'p.tag-list', 'Tags: ' + tags.join(', ')
+  end
+
+  test 'should display no tags on image show page if image has none' do
+    post images_url, params: { image: { url: 'https://github.com/ProbablyFaiz.png' } }
+    get image_url(Image.last)
+    assert_select 'p.tag-list', 'Tags:'
+  end
+
   test 'should not create image for non http/s url type' do
     assert_no_difference('Image.count') do
       post images_url, params: { image: { url: 'ftp://example.com/test.png' } }

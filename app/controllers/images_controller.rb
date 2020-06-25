@@ -6,7 +6,9 @@ class ImagesController < ApplicationController
   end
 
   # GET /images/1
-  def show; end
+  def show
+    @tags_string = @image.tag_list.join(', ')
+  end
 
   # GET /images/new
   def new
@@ -38,6 +40,6 @@ class ImagesController < ApplicationController
   end
 
   def image_params
-    params.require(:image).permit(:url)
+    params.require(:image).permit(:url, :tag_list)
   end
 end
