@@ -162,6 +162,15 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     get image_url(image)
     assert_response :success
     assert_select 'img[alt="' + image.url + '"]'
+    assert_select 'a.delete-image', 'Delete'
+  end
+
+  test 'should destroy image' do
+    image = Image.create(url: 'https://github.com/ProbablyFaiz.png')
+    delete image_url(image)
+    assert_redirected_to images_url
+    follow_redirect!
+    assert_select 'p#notice', 'Image was successfully deleted.'
   end
 
   test 'should redirect to index if image does not exist' do

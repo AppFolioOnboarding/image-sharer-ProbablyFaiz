@@ -2,4 +2,5 @@
 
 <img src="<%= @image.url %>"  alt="<%= @image.url %>">
 <p class="tag-list">Tags: <%= @tags_string %></p>
-<%= link_to 'Back', root_path %>
+<%= link_to 'Back', root_path %> |
+<%= link_to 'Delete', image_path(@image), method: :delete, :data => {:confirm => 'Are you sure?'}, class: 'delete-image' %>

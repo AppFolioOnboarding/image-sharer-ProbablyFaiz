@@ -1,5 +1,5 @@
 class ImagesController < ApplicationController
-  before_action :set_image, only: %i[show]
+  before_action :set_image, only: %i[show destroy]
 
   def index
     if index_params[:tag].present?
@@ -31,6 +31,11 @@ class ImagesController < ApplicationController
     else
       render :new, notice: 'Failed to create the image.', status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @image.destroy
+    redirect_to images_path, notice: 'Image was successfully deleted.'
   end
 
   private
