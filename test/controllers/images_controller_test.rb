@@ -32,6 +32,53 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'should filter images by tag on index' do
+    image1 = Image.create(url: 'https://github.com/ProbablyFaiz.png', tag_list: 'tag1, tag2')
+    image2 = Image.create(url: 'https://github.com/bhargav265.png', tag_list: 'tag2, tag3')
+    image3 = Image.create(url: 'https://github.com/n-wach.png', tag_list: 'tag3')
+
+    get images_path(tag: 'tag1')
+    assert_response :success
+    assert_select format('img[src="%<url>s"]', url: image1.url)
+    assert_select format('img[src="%<url>s"]', url: image2.url), false
+    assert_select format('img[src="%<url>s"]', url: image3.url), false
+
+    get images_path(tag: 'tag2')
+    assert_response :success
+    assert_select format('img[src="%<url>s"]', url: image1.url)
+    assert_select format('img[src="%<url>s"]', url: image2.url)
+    assert_select format('img[src="%<url>s"]', url: image3.url), false
+
+    get images_path(tag: 'tag3')
+    assert_response :success
+    assert_select format('img[src="%<url>s"]', url: image1.url), false
+    assert_select format('img[src="%<url>s"]', url: image2.url)
+    assert_select format('img[src="%<url>s"]', url: image3.url)
+  end
+
+  test 'should show all images if none for tag on index' do
+    image1 = Image.create(url: 'https://github.com/ProbablyFaiz.png', tag_list: 'tag1')
+    get images_path(tag: 'tag2')
+    assert_redirected_to images_path
+    follow_redirect!
+    assert_select 'p#notice', 'No images found for that tag.'
+    assert_select format('img[src="%<url>s"]', url: image1.url)
+  end
+
+  test 'should show tag filter options on index' do
+    Image.create(url: 'https://github.com/ProbablyFaiz.png', tag_list: 'tag1, tag2')
+    Image.create(url: 'https://github.com/bhargav265.png', tag_list: 'tag2, tag3')
+    Image.create(url: 'https://github.com/n-wach.png', tag_list: 'tag3')
+    get images_path
+    assert_response :success
+    assert_select 'p.tag-filters' do
+      assert_select format('a[href="%<path>s"]', path: images_path), text: 'All'
+      assert_select format('a[href="%<path>s"]', path: images_path(tag: 'tag1')), text: 'tag1'
+      assert_select format('a[href="%<path>s"]', path: images_path(tag: 'tag2')), text: 'tag2'
+      assert_select format('a[href="%<path>s"]', path: images_path(tag: 'tag3')), text: 'tag3'
+    end
+  end
+
   test 'should get new' do
     get new_image_url
     assert_response :success
