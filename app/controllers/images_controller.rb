@@ -2,7 +2,14 @@ class ImagesController < ApplicationController
   before_action :set_image, only: %i[show]
 
   def index
-    @images = Image.order(created_at: :desc).all
+    if index_params[:tag].present?
+      @images = Image.tagged_with(index_params[:tag])
+      redirect_to images_path, notice: 'No images found for that tag.' if @images.empty?
+    else
+      @images = Image.all
+    end
+    @images = @images.order(created_at: :desc)
+    @tag_filters = Image.tag_counts_on(:tags).map(&:name) || []
   end
 
   # GET /images/1
@@ -33,6 +40,10 @@ class ImagesController < ApplicationController
     @image = Image.find(show_params[:id])
   rescue ActiveRecord::RecordNotFound
     redirect_to images_path, notice: 'The specified image could not be found.'
+  end
+
+  def index_params
+    params.permit(:tag)
   end
 
   def show_params
