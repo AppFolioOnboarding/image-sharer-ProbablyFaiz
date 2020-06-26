@@ -12,7 +12,7 @@
 
 <div class="image-list">
   <% @images.each do |image| %>
-    <a href="<%= image_path(image) %>"><img src="<%= image.url %>" alt="<%= image.url %>"></a>
+    <a class="image-link" href="<%= image_path(image) %>"><img src="<%= image.url %>" alt="<%= image.url %>"></a>
   <% end %>
 </div>
 

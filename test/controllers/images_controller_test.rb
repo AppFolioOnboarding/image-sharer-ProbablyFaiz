@@ -134,7 +134,7 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     post images_url, params: { image: { url: 'https://github.com/ProbablyFaiz.png',
                                         tag_list: tags.join(',') } }
     get image_url(Image.last)
-    assert_select 'p.tag-list', 'Tags: ' + tags.join(', ')
+    assert_select 'div#tags-string', tags.join(', ')
   end
 
   test 'should display no tags on image show page if image has none' do

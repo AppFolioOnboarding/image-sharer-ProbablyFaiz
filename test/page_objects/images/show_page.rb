@@ -3,26 +3,30 @@ module PageObjects
     class ShowPage < PageObjects::Document
       path :image
 
+      element :img, locator: '#image-display'
+      element :tag_list, locator: '#tags-string'
+
       def image_url
-        # TODO
+        node.find('#image-display')[:src]
       end
 
       def tags
-        # TODO
+        node.find('#tags-string').text.split(', ')
       end
 
       def delete
-        # TODO
+        node.click_on('Delete')
         yield node.driver.browser.switch_to.alert
       end
 
       def delete_and_confirm!
-        # TODO
+        delete(&:accept)
         window.change_to(IndexPage)
       end
 
       def go_back_to_index!
-        # TODO
+        node.click_on('Back')
+        window.change_to(IndexPage)
       end
     end
   end
