@@ -134,7 +134,7 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     post images_url, params: { image: { url: 'https://github.com/ProbablyFaiz.png',
                                         tag_list: tags.join(',') } }
     get image_url(Image.last)
-    assert_select 'p.tag-list', 'Tags: ' + tags.join(', ')
+    assert_select 'div#tags-string', tags.join(', ')
   end
 
   test 'should display no tags on image show page if image has none' do
@@ -162,6 +162,15 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     get image_url(image)
     assert_response :success
     assert_select 'img[alt="' + image.url + '"]'
+    assert_select 'a.delete-image', 'Delete'
+  end
+
+  test 'should destroy image' do
+    image = Image.create(url: 'https://github.com/ProbablyFaiz.png')
+    delete image_url(image)
+    assert_redirected_to images_url
+    follow_redirect!
+    assert_select 'p#notice', 'Image was successfully deleted.'
   end
 
   test 'should redirect to index if image does not exist' do
