@@ -1,8 +1,9 @@
+import { Provider } from 'mobx-react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
-import { Provider } from 'mobx-react';
 import FeedbackStore from './stores/FeedbackStore';
+import Footer from './components/Footer';
 
 const stores = {
   feedbackStore: new FeedbackStore()
@@ -21,7 +22,7 @@ ReactDOM.render(
 
 ReactDOM.render(
   <Provider stores={stores}>
-    <App/>
+    <App />
   </Provider>,
   document.getElementById('feedback-root')
 );

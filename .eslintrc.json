@@ -9,6 +9,8 @@
   "settings": {
     "import/resolver": {
       "webpack": {}
-    }
+    },
+    "import/no-unresolved": "off",
+    "import/extensions": "off"
   }
 }
