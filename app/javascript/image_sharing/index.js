@@ -10,6 +10,15 @@ const stores = {
 
 /* Initialize your store here*/
 
+
+ReactDOM.render(
+  <Provider stores={stores}>
+    <Footer />
+  </Provider>,
+  document.getElementById('footer-root')
+);
+
+
 ReactDOM.render(
   <Provider stores={stores}>
     <App/>

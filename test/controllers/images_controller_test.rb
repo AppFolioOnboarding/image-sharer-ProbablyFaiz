@@ -6,10 +6,11 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should show images index at root' do
+  test 'should show images index and footer at root' do
     get root_url
     assert_response :success
     assert_select 'div.image-list'
+    assert_select 'div#footer-root'
   end
 
   test 'should show images in order on index' do
