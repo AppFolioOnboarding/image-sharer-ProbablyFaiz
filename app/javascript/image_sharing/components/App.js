@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { inject } from 'mobx-react';
+import Feedback from './Feedback';
 import Header from './Header';
 
 class App extends Component {
-  /* Add Prop Types check*/
   render() {
     return (
       <div>
         <Header title="Send Feedback" />
+        <Feedback />
       </div>
     );
   }
