@@ -13,7 +13,7 @@ const stores = {
 
 
 ReactDOM.render(
-  <Provider stores={stores}>
+  <Provider {...stores}>
     <Footer />
   </Provider>,
   document.getElementById('footer-root')
@@ -21,7 +21,7 @@ ReactDOM.render(
 
 
 ReactDOM.render(
-  <Provider stores={stores}>
+  <Provider {...stores}>
     <App />
   </Provider>,
   document.getElementById('feedback-root')

@@ -4,11 +4,7 @@ import { observer, inject } from 'mobx-react';
 import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import FeedbackStore from '../stores/FeedbackStore';
 
-@inject((stores) => {
-  return {
-    feedbackStore: stores.feedbackStore
-  };
-})
+@inject('feedbackStore')
 @observer
 class Feedback extends Component {
   static propTypes = {
