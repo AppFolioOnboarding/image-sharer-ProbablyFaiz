@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
-import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import { Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 import FeedbackStore from '../stores/FeedbackStore';
 
 @inject('feedbackStore')
@@ -15,6 +15,9 @@ class Feedback extends Component {
     const fStore = this.props.feedbackStore;
     return (
       <div id="feedback-form-container" style={{ maxWidth: '500px' }}>
+        {fStore.flashMessage &&
+        // eslint-disable-next-line max-len
+        <Alert id="flash-message-alert" color={fStore.flashMessageColor}>{fStore.flashMessage}</Alert>}
         <Form>
           <FormGroup>
             <Label for="nameField">Name</Label>
@@ -34,10 +37,10 @@ class Feedback extends Component {
               name="feedback"
               id="feedbackField"
               value={fStore.feedbackValue}
-              onChange={event => fStore.setAttribute('nameValue', event.target.value)}
+              onChange={event => fStore.setAttribute('feedbackValue', event.target.value)}
             />
           </FormGroup>
-          <Button color="primary">Submit</Button>
+          <Button color="primary" onClick={() => fStore.submitFeedback()}>Submit</Button>
         </Form>
       </div>
     );
