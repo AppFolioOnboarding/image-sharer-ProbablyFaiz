@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { inject } from 'mobx-react';
 import Feedback from './Feedback';
 import Header from './Header';
 
@@ -14,4 +13,4 @@ class App extends Component {
   }
 }
 
-export default inject('stores')(App);
+export default App;
